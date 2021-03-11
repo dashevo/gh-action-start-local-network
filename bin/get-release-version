@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const getReleaseVersion = require('../src/getReleaseVersion');
+
+async function main() {
+  const packageFilePath = process.argv[2];
+  const overrideMajorVersion = process.argv[3] || undefined;
+
+  // eslint-disable-next-line import/no-dynamic-require,global-require
+  const { version } = require(packageFilePath);
+
+  const resultingVersion = await getReleaseVersion(version, {
+    overrideMajorVersion,
+  });
+
+  console.log(resultingVersion);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
