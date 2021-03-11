@@ -85,7 +85,7 @@ then
   git clone https://github.com/dashevo/drive.git
   cd "$TMP"/drive
   git checkout "$drive_branch"
-  docker build -t drive:local .
+  docker build -t drive:local --load .
   mn_bootstrap_drive_options="--drive-image-build-path=$TMP/drive"
   echo "mn_bootstrap_drive_options=--drive-image-build-path=$TMP/drive" >> $GITHUB_ENV
 fi
