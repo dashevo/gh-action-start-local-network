@@ -44,6 +44,9 @@ case ${i} in
     --drive-branch=*)
     drive_branch="${i#*=}"
     ;;
+    --dashmate-branch=*)
+    dashmate_branch="${i#*=}"
+    ;;
     --sdk-branch=*)
     sdk_branch="${i#*=}"
     ;;
@@ -64,42 +67,48 @@ rm -rf "$TMP"
 mkdir "$TMP"
 
 # Download dapi from defined branch
-mn_bootstrap_dapi_options="--dapi-image-build-path="
-if [ -n "$dapi_branch" ]
-then
-  echo "Cloning DAPI from branch $dapi_branch"
-  cd "$TMP"
-  git clone https://github.com/dashevo/dapi.git
-  cd "$TMP"/dapi
-  git checkout "$dapi_branch"
-  mn_bootstrap_dapi_options="--dapi-image-build-path=$TMP/dapi"
-  echo "mn_bootstrap_dapi_options=--dapi-image-build-path=$TMP/dapi" >> $GITHUB_ENV
-fi
+#mn_bootstrap_dapi_options="--dapi-image-build-path="
+#if [ -n "$dapi_branch" ]
+#then
+#  echo "Cloning DAPI from branch $dapi_branch"
+#  cd "$TMP"
+#  git clone https://github.com/dashevo/dapi.git
+#  cd "$TMP"/dapi
+#  git checkout "$dapi_branch"
+#  mn_bootstrap_dapi_options="--dapi-image-build-path=$TMP/dapi"
+#  echo "mn_bootstrap_dapi_options=--dapi-image-build-path=$TMP/dapi" >> $GITHUB_ENV
+#fi
 
 # Download drive from defined branch
-mn_bootstrap_drive_options="--drive-image-build-path="
-if [ -n "$drive_branch" ]
-then
-  echo "Cloning Drive from branch $drive_branch"
-  cd "$TMP"
-  git clone https://github.com/dashevo/drive.git
-  cd "$TMP"/drive
-  git status
-  git checkout "$drive_branch"
-  # docker build -t drive:local --load .
-  mn_bootstrap_drive_options="--drive-image-build-path=$TMP/drive"
-  echo "mn_bootstrap_drive_options=--drive-image-build-path=$TMP/drive" >> $GITHUB_ENV
-fi
+#mn_bootstrap_drive_options="--drive-image-build-path="
+#if [ -n "$drive_branch" ]
+#then
+#  echo "Cloning Drive from branch $drive_branch"
+#  cd "$TMP"
+#  git clone https://github.com/dashevo/drive.git --single-branch --branch $drive_branch
+#  cd "$TMP"/drive
+#  git status
+#  git checkout "$drive_branch"
+#  # docker build -t drive:local --load .
+#  mn_bootstrap_drive_options="--drive-image-build-path=$TMP/drive"
+#  echo "mn_bootstrap_drive_options=--drive-image-build-path=$TMP/drive" >> $GITHUB_ENV
+#fi
 
 # Download and install mn-bootstrap
 echo "Installing mn-bootstrap"
-echo "$MN_RELEASE_LINK"
-curl -L "$MN_RELEASE_LINK" > "$TMP"/mn-bootstrap.tar.gz
-mkdir "$TMP"/mn-bootstrap && tar -C "$TMP"/mn-bootstrap -xvf "$TMP"/mn-bootstrap.tar.gz
-MN_RELEASE_DIR="$(ls "$TMP"/mn-bootstrap)"
-cd "$TMP"/mn-bootstrap/"$MN_RELEASE_DIR"
+cd "$TMP"
+git clone https://github.com/dashevo/mn-bootstrap.git --single-branch --branch $dashmate_branch
+cd "$TMP"/mn-bootstrap
+
+
+#echo "$MN_RELEASE_LINK"
+#curl -L "$MN_RELEASE_LINK" > "$TMP"/mn-bootstrap.tar.gz
+#mkdir "$TMP"/mn-bootstrap && tar -C "$TMP"/mn-bootstrap -xvf "$TMP"/mn-bootstrap.tar.gz
+#MN_RELEASE_DIR="$(ls "$TMP"/mn-bootstrap)"
+#cd "$TMP"/mn-bootstrap/"$MN_RELEASE_DIR"
 
 npm ci
+npm link
 
 if [ -n "$sdk_branch" ]
 then
@@ -107,7 +116,23 @@ then
   npm i "github:dashevo/DashJS#$sdk_branch"
 fi
 
-npm link
+if [ -n "$drive_branch" ]
+then
+  echo "Cloning Drive from branch $drive_branch"
+  cd "$TMP"
+  git clone https://github.com/dashevo/drive.git --single-branch --branch $drive_branch
+  cd "$TMP"/drive
+  mn config:set --config=local platform.drive.abci.docker.build.path $TMP/drive
+fi
+
+if [ -n "$dapi_branch" ]
+then
+  echo "Cloning DAPI from branch $dapi_branch"
+  cd "$TMP"
+  git clone https://github.com/dashevo/dapi.git --single-branch --branch $dapi_branch
+  cd "$TMP"/dapi
+  mn config:set --config=local platform.dapi.api.docker.build.path $TMP/dapi
+fi
 
 # Setup node for local node mn-bootstrap
 echo "Setting up a local node"
@@ -121,13 +146,11 @@ mn config:set --config=local platform.drive.abci.log.stdout.level trace
 
 if [[ $CURRENT_VERSION == "0.19"* ]]
 then
-  mn setup local --node-count="$NODE_COUNT" "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" | tee setup.log
+  mn setup local --node-count="$NODE_COUNT" | tee setup.log
   CONFIG="local_1"
   MINER_CONFIG="local_seed"
 else
-  mn setup local "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" | tee setup.log
-  CONFIG="local"
-  MINER_CONFIG="local"
+  exit 1
 fi
 
 mn config:set --config="$MINER_CONFIG" core.miner.enable true
@@ -156,7 +179,7 @@ if [[ $CURRENT_VERSION == "0.19"* ]]
 then
   mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
 else
-  mn start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options"
+  exit 1
 fi
 
 #Export variables
