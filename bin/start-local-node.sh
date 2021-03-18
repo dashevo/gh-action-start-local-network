@@ -129,7 +129,7 @@ if [ -n "$dapi_branch" ]
 then
   echo "Cloning DAPI from branch $dapi_branch"
   cd "$TMP"
-  git clone https://github.com/dashevo/dapi.git --single-branch --branch $dapi_branch
+  git clone https://github.com/strophy/dapi.git --single-branch --branch $dapi_branch dapi
   cd "$TMP"/dapi
   mn config:set --config=local platform.dapi.api.docker.build.path $TMP/dapi
 fi
