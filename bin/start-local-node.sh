@@ -123,6 +123,7 @@ then
   git clone https://github.com/strophy/js-drive.git --single-branch --branch $drive_branch drive
   cd "$TMP"/drive
   docker build -t drive_abci:local --load .
+  # --cache-from --cache-to
   mn config:set --config=local platform.drive.abci.docker.build.path $TMP/drive
 fi
 
@@ -133,6 +134,7 @@ then
   git clone https://github.com/strophy/dapi.git --single-branch --branch $dapi_branch dapi
   cd "$TMP"/dapi
   docker build -t dapi_api:local --load .
+  # --cache-from --cache-to
   mn config:set --config=local platform.dapi.api.docker.build.path $TMP/dapi
 fi
 
