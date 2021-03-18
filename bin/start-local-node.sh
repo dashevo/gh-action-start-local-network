@@ -56,10 +56,10 @@ done
 # Define variables
 
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
-MN_RELEASE_LINK=$("$DIR"/get-github-release-link "$PACKAGE_JSON_PATH" dashevo/mn-bootstrap "$major_version" "$minor_version")
-
-echo "Current version: ${CURRENT_VERSION}";
+#CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
+#MN_RELEASE_LINK=$("$DIR"/get-github-release-link "$PACKAGE_JSON_PATH" dashevo/mn-bootstrap "$major_version" "$minor_version")
+#
+#echo "Current version: ${CURRENT_VERSION}";
 
 # Create temp dir
 TMP="$DIR"/../tmp
@@ -144,14 +144,14 @@ mn config:set --config=local environment development
 mn config:set --config=local platform.drive.abci.log.stdout.level trace
 
 
-if [[ $CURRENT_VERSION == "0.19"* ]]
-then
-  mn setup local --node-count="$NODE_COUNT" | tee setup.log
-  CONFIG="local_1"
-  MINER_CONFIG="local_seed"
-else
-  exit 1
-fi
+#if [[ $CURRENT_VERSION == "0.19"* ]]
+#then
+mn setup local --node-count="$NODE_COUNT" | tee setup.log
+CONFIG="local_1"
+MINER_CONFIG="local_seed"
+#else
+#  exit 1
+#fi
 
 mn config:set --config="$MINER_CONFIG" core.miner.enable true
 mn config:set --config="$MINER_CONFIG" core.miner.interval 60s
@@ -175,15 +175,15 @@ echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
 
 #Start mn-bootstrap
 echo "Starting mn-bootstrap"
-if [[ $CURRENT_VERSION == "0.19"* ]]
-then
-  mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
-else
-  exit 1
-fi
+#if [[ $CURRENT_VERSION == "0.19"* ]]
+#then
+mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
+#else
+#  exit 1
+#fi
 
 #Export variables
-export CURRENT_VERSION
+#export CURRENT_VERSION
 export FAUCET_PRIVATE_KEY
 export DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
 export DPNS_TOP_LEVEL_IDENTITY_ID
@@ -192,7 +192,7 @@ export DPNS_CONTRACT_BLOCK_HEIGHT
 
 if [[ -n $GITHUB_ACTIONS ]]
 then
-  echo "current-version=$CURRENT_VERSION" >> $GITHUB_ENV
+  #echo "current-version=$CURRENT_VERSION" >> $GITHUB_ENV
   echo "faucet-private-key=$FAUCET_PRIVATE_KEY" >> $GITHUB_ENV
   echo "dpns-top-level-identity-private-key=$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY" >> $GITHUB_ENV
   echo "dpns-top-level-identity-id=$DPNS_TOP_LEVEL_IDENTITY_ID" >> $GITHUB_ENV
