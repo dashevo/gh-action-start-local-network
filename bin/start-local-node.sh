@@ -120,7 +120,7 @@ if [ -n "$drive_branch" ]
 then
   echo "Cloning Drive from branch $drive_branch"
   cd "$TMP"
-  git clone https://github.com/strophy/js-drive.git --single-branch --branch $drive_branch
+  git clone https://github.com/strophy/js-drive.git --single-branch --branch $drive_branch drive
   cd "$TMP"/drive
   mn config:set --config=local platform.drive.abci.docker.build.path $TMP/drive
 fi
