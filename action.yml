@@ -6,8 +6,10 @@ inputs:
     default: 'master'
   dapi-image-build-branch:
     description: 'dapi branch to be injected into mn-bootstrap'
+    default: $GITHUB_HEAD_REF
   drive-image-build-branch:
     description: 'drive branch to be injected into mn-bootstrap'
+    default: $GITHUB_HEAD_REF
   install-sdk-version:
     description: 'Dash SDK (DashJS) branch to be injected into mn-bootstrap'
 
