@@ -4,10 +4,10 @@ inputs:
   dashmate-branch:
     description: 'dashmate branch to use'
     default: 'master'
-  dapi-image-build-branch:
+  dapi-branch:
     description: 'dapi branch to be injected into mn-bootstrap'
     default: $GITHUB_HEAD_REF
-  drive-image-build-branch:
+  drive-branch:
     description: 'drive branch to be injected into mn-bootstrap'
     default: $GITHUB_HEAD_REF
   install-sdk-version:
@@ -27,6 +27,6 @@ runs:
         source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
           --override-major-version=0 \
           --dashmate-branch=${{ inputs.dashmate-branch }} \
-          --dapi-branch=${{ inputs.dapi-image-build-branch }} \
-          --drive-branch=${{ inputs.drive-image-build-branch }} \
+          --dapi-branch=${{ inputs.dapi-branch }} \
+          --drive-branch=${{ inputs.drive-branch }} \
           --sdk-branch=${{ inputs.install-sdk-version }}
