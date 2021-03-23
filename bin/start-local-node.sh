@@ -55,6 +55,9 @@ done
 
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
+
+echo "Current version: ${CURRENT_VERSION}";
 
 # Create temp dir
 TMP="$DIR"/../tmp
@@ -62,6 +65,20 @@ rm -rf "$TMP"
 mkdir "$TMP"
 
 # Download and install mn-bootstrap
+
+if [ -z "$dashmate_branch" ]
+then
+  if [ $CURRENT_VERSION contains -dev ] 
+  then
+    dashmate_branch=$CURRENT_VERSION minus dev suffix bit
+  else
+    dashmate_branch="master"
+  fi
+fi
+
+echo "Dashmate branch is"
+echo $dashmate_branch
+
 echo "Installing mn-bootstrap"
 cd "$TMP"
 git clone https://github.com/dashevo/mn-bootstrap.git --single-branch --branch $dashmate_branch
