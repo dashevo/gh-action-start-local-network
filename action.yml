@@ -3,13 +3,10 @@ description: 'Invokes mn-bootstrap to set up a local network for CI'
 inputs:
   dashmate-branch:
     description: 'dashmate branch to use'
-    default: 'master'
   dapi-branch:
     description: 'dapi branch to be injected into mn-bootstrap'
-    default: $GITHUB_HEAD_REF
   drive-branch:
     description: 'drive branch to be injected into mn-bootstrap'
-    default: $GITHUB_HEAD_REF
   install-sdk-version:
     description: 'Dash SDK (DashJS) branch to be injected into mn-bootstrap'
 
@@ -20,6 +17,11 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: npm ci && npm link
+    - name: Echo GH Workspace
+      shell: bash
+      run: |
+        echo $GITHUB_WORKSPACE
+        cat $GITHUB_WORKSPACE/package.json
     - name: Start local network
       shell: bash
       working-directory: ${{ github.action_path }}
