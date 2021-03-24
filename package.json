@@ -7,9 +7,10 @@
     "test": "NODE_ENV=test mocha ./test/**/*.spec.js"
   },
   "bin": {
-    "print-bells": "bin/print-visual-bells.sh",
     "get-github-release-link": "bin/get-github-release-link",
     "get-release-version": "bin/get-release-version",
+    "restore-cache": "bin/restore-cache",
+    "save-cache": "bin/save-cache",
     "start-local-node": "bin/start-local-node.sh"
   },
   "repository": {
