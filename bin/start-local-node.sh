@@ -53,6 +53,11 @@ case ${i} in
 esac
 done
 
+# Ensure $TMPDIR
+if [ -n "$TMPDIR" ]; then
+  TMPDIR="/tmp"
+fi
+
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
