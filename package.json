@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/dashevo/travis-ci-tools#readme",
   "dependencies": {
-    "github-api": "^3.3.0",
     "semver": "^7.3.2"
   },
   "devDependencies": {

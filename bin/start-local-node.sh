@@ -76,11 +76,10 @@ then
   fi
 fi
 
-echo "Dashmate branch: ${dashmate_branch}"
+echo "Installing Dashmate from branch ${dashmate_branch}"
 
-echo "Installing Dashmate"
-cd "$TMPDIR"
-git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/mn-bootstrap.git
+git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/mn-bootstrap.git "$TMPDIR/mn-bootstrap"
+
 cd "$TMPDIR"/mn-bootstrap
 
 npm ci
@@ -92,41 +91,37 @@ then
   npm i "github:dashevo/DashJS#$sdk_branch"
 fi
 
+# Build Drive from sources
+
 if [ -n "$drive_branch" ]
 then
   echo "Cloning Drive from branch $drive_branch"
-  cd "$TMPDIR"
-  git clone https://github.com/dashevo/js-drive.git --single-branch --branch $drive_branch drive
-  cd "$TMPDIR"/drive
-  echo "Drive branch: ${drive_branch}"
-  #docker build -t drive_abci:local .
-  # --cache-from --cache-to
-  mn config:set --config=local platform.drive.abci.docker.build.path $TMPDIR/drive
+  git clone --depth 1 --branch $drive_branch https://github.com/dashevo/js-drive.git "$TMPDIR/drive"
+  mn config:set --config=local platform.drive.abci.docker.build.path "$TMPDIR/drive"
 fi
+
+# Build DAPI from sources
 
 if [ -n "$dapi_branch" ]
 then
   echo "Cloning DAPI from branch $dapi_branch"
-  cd "$TMPDIR"
-  git clone https://github.com/dashevo/dapi.git --single-branch --branch $dapi_branch dapi
-  cd "$TMPDIR"/dapi
-  echo "DAPI branch: ${dapi_branch}"
-  #docker build -t dapi_api:local .
-  # --cache-from --cache-to
-  mn config:set --config=local platform.dapi.api.docker.build.path $TMPDIR/dapi
+  git clone --depth 1 --branch $dapi_branch https://github.com/dashevo/dapi.git "$TMPDIR/dapi"
+  mn config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/drive"
 fi
 
-# Setup node for local node mn-bootstrap
-echo "Setting up a local node"
+# Setup local network
 
-# Set number of nodes
+echo "Setting up a local network"
+
 NODE_COUNT=3
 
 mn config:set --config=local environment development
 mn config:set --config=local platform.drive.abci.log.stdout.level trace
 
 mn setup local --node-count="$NODE_COUNT" | tee setup.log
+
 CONFIG="local_1"
+
 MINER_CONFIG="local_seed"
 
 mn config:set --config="$MINER_CONFIG" core.miner.enable true
@@ -138,7 +133,7 @@ DPNS_CONTRACT_BLOCK_HEIGHT=$(mn config:get --config="$CONFIG" platform.dpns.cont
 DPNS_TOP_LEVEL_IDENTITY_ID=$(mn config:get --config="$CONFIG" platform.dpns.ownerId)
 DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY=$(grep -m 1 "HD private key:" setup.log | awk '{$1=""; printf $5}')
 
-echo "Node is configured:"
+echo "Local network is configured:"
 
 echo "FAUCET_PRIVATE_KEY: ${FAUCET_PRIVATE_KEY}"
 echo "DPNS_CONTRACT_ID: ${DPNS_CONTRACT_ID}"
@@ -146,24 +141,17 @@ echo "DPNS_CONTRACT_BLOCK_HEIGHT: ${DPNS_CONTRACT_BLOCK_HEIGHT}"
 echo "DPNS_TOP_LEVEL_IDENTITY_ID: ${DPNS_TOP_LEVEL_IDENTITY_ID}"
 echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY}"
 
-#Start mn-bootstrap
+# Start mn-bootstrap
+
 echo "Starting mn-bootstrap"
+
 mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
 
-#Export variables
-export CURRENT_VERSION
-export FAUCET_PRIVATE_KEY
-export DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
-export DPNS_TOP_LEVEL_IDENTITY_ID
-export DPNS_CONTRACT_ID
-export DPNS_CONTRACT_BLOCK_HEIGHT
+# Export variables
 
-if [[ -n $GITHUB_ACTIONS ]]
-then
-  echo "current-version=$CURRENT_VERSION" >> $GITHUB_ENV
-  echo "faucet-private-key=$FAUCET_PRIVATE_KEY" >> $GITHUB_ENV
-  echo "dpns-top-level-identity-private-key=$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY" >> $GITHUB_ENV
-  echo "dpns-top-level-identity-id=$DPNS_TOP_LEVEL_IDENTITY_ID" >> $GITHUB_ENV
-  echo "dpns-contract-id=$DPNS_CONTRACT_ID" >> $GITHUB_ENV
-  echo "dpns-contract-block-height=$DPNS_CONTRACT_BLOCK_HEIGHT" >> $GITHUB_ENV
-fi
+echo "current-version=$CURRENT_VERSION" >> $GITHUB_ENV
+echo "faucet-private-key=$FAUCET_PRIVATE_KEY" >> $GITHUB_ENV
+echo "dpns-top-level-identity-private-key=$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY" >> $GITHUB_ENV
+echo "dpns-top-level-identity-id=$DPNS_TOP_LEVEL_IDENTITY_ID" >> $GITHUB_ENV
+echo "dpns-contract-id=$DPNS_CONTRACT_ID" >> $GITHUB_ENV
+echo "dpns-contract-block-height=$DPNS_CONTRACT_BLOCK_HEIGHT" >> $GITHUB_ENV

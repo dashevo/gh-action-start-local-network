@@ -17,11 +17,13 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: npm ci && npm link
+
     - name: Echo GH Workspace
       shell: bash
       run: |
         echo $GITHUB_WORKSPACE
         cat $GITHUB_WORKSPACE/package.json
+
     - name: Start local network
       shell: bash
       working-directory: ${{ github.action_path }}
