@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const cache = require('@actions/cache');
+
+async function main() {
+  const path = process.argv[2];
+  const key = process.argv[3];
+
+  return await cache.saveCache([path], key);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

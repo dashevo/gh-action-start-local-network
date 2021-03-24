@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const cache = require('@actions/cache');
+
+async function main() {
+  const path = process.argv[2];
+  const key = process.argv[3];
+  const restoreKey = process.argv[4] || undefined;
+
+  const restoreKeys = restoreKey === undefined ? undefined : [restoreKey];
+
+  return await cache.restoreCache([path], key, restoreKeys);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+
+
+// name: Enable NPM cache
+// uses: actions/cache@v2
+// with:
+// path: ‘~/.npm’
+// key: ${{ runner.os }}-node-${{ hashFiles(‘**/package-lock.json’) }}
+// restore-keys: |
+// ${{ runner.os }}-node-
