@@ -59,11 +59,6 @@ CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_versio
 
 echo "Current version: ${CURRENT_VERSION}";
 
-# Create temp dir
-TMP="$DIR"/../tmp
-rm -rf "$TMP"
-mkdir "$TMP"
-
 # Download and install mn-bootstrap
 
 if [ -z "$dashmate_branch" ]
@@ -79,9 +74,9 @@ fi
 echo "Dashmate branch: ${dashmate_branch}"
 
 echo "Installing Dashmate"
-cd "$TMP"
+cd "$TMPDIR"
 git clone https://github.com/dashevo/mn-bootstrap.git --single-branch --branch $dashmate_branch
-cd "$TMP"/mn-bootstrap
+cd "$TMPDIR"/mn-bootstrap
 
 npm ci
 npm link
@@ -95,25 +90,25 @@ fi
 if [ -n "$drive_branch" ]
 then
   echo "Cloning Drive from branch $drive_branch"
-  cd "$TMP"
-  git clone https://github.com/strophy/js-drive.git --single-branch --branch $drive_branch drive
-  cd "$TMP"/drive
+  cd "$TMPDIR"
+  git clone https://github.com/dashevo/js-drive.git --single-branch --branch $drive_branch drive
+  cd "$TMPDIR"/drive
   echo "Drive branch: ${drive_branch}"
   #docker build -t drive_abci:local .
   # --cache-from --cache-to
-  mn config:set --config=local platform.drive.abci.docker.build.path $TMP/drive
+  mn config:set --config=local platform.drive.abci.docker.build.path $TMPDIR/drive
 fi
 
 if [ -n "$dapi_branch" ]
 then
   echo "Cloning DAPI from branch $dapi_branch"
-  cd "$TMP"
-  git clone https://github.com/strophy/dapi.git --single-branch --branch $dapi_branch dapi
-  cd "$TMP"/dapi
+  cd "$TMPDIR"
+  git clone https://github.com/dashevo/dapi.git --single-branch --branch $dapi_branch dapi
+  cd "$TMPDIR"/dapi
   echo "DAPI branch: ${dapi_branch}"
   #docker build -t dapi_api:local .
   # --cache-from --cache-to
-  mn config:set --config=local platform.dapi.api.docker.build.path $TMP/dapi
+  mn config:set --config=local platform.dapi.api.docker.build.path $TMPDIR/dapi
 fi
 
 # Setup node for local node mn-bootstrap
