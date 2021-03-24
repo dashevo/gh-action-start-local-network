@@ -70,16 +70,15 @@ if [ -z "$dashmate_branch" ]
 then
   if [[ "$CURRENT_VERSION" == *"-dev"* ]]
   then
-    dashmate_branch=$CURRENT_VERSION
+    dashmate_branch="v$CURRENT_VERSION"
   else
     dashmate_branch="master"
   fi
 fi
 
-echo "Dashmate branch is"
-echo $dashmate_branch
+echo "Dashmate branch: ${dashmate_branch}"
 
-echo "Installing mn-bootstrap"
+echo "Installing Dashmate"
 cd "$TMP"
 git clone https://github.com/dashevo/mn-bootstrap.git --single-branch --branch $dashmate_branch
 cd "$TMP"/mn-bootstrap
@@ -99,6 +98,7 @@ then
   cd "$TMP"
   git clone https://github.com/strophy/js-drive.git --single-branch --branch $drive_branch drive
   cd "$TMP"/drive
+  echo "Drive branch: ${drive_branch}"
   #docker build -t drive_abci:local .
   # --cache-from --cache-to
   mn config:set --config=local platform.drive.abci.docker.build.path $TMP/drive
@@ -110,6 +110,7 @@ then
   cd "$TMP"
   git clone https://github.com/strophy/dapi.git --single-branch --branch $dapi_branch dapi
   cd "$TMP"/dapi
+  echo "DAPI branch: ${dapi_branch}"
   #docker build -t dapi_api:local .
   # --cache-from --cache-to
   mn config:set --config=local platform.dapi.api.docker.build.path $TMP/dapi
@@ -150,6 +151,7 @@ echo "Starting mn-bootstrap"
 mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
 
 #Export variables
+export CURRENT_VERSION
 export FAUCET_PRIVATE_KEY
 export DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
 export DPNS_TOP_LEVEL_IDENTITY_ID
@@ -158,6 +160,7 @@ export DPNS_CONTRACT_BLOCK_HEIGHT
 
 if [[ -n $GITHUB_ACTIONS ]]
 then
+  echo "current-version=$CURRENT_VERSION" >> $GITHUB_ENV
   echo "faucet-private-key=$FAUCET_PRIVATE_KEY" >> $GITHUB_ENV
   echo "dpns-top-level-identity-private-key=$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY" >> $GITHUB_ENV
   echo "dpns-top-level-identity-id=$DPNS_TOP_LEVEL_IDENTITY_ID" >> $GITHUB_ENV
