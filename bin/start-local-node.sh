@@ -68,9 +68,9 @@ mkdir "$TMP"
 
 if [ -z "$dashmate_branch" ]
 then
-  if [ $CURRENT_VERSION contains -dev ] 
+  if [[ "$CURRENT_VERSION" == *"-dev"* ]]
   then
-    dashmate_branch=$CURRENT_VERSION minus dev suffix bit
+    dashmate_branch=$CURRENT_VERSION
   else
     dashmate_branch="master"
   fi
