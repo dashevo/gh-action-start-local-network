@@ -54,7 +54,7 @@ esac
 done
 
 # Ensure $TMPDIR
-if [ -n "$TMPDIR" ]; then
+if [ -z "$TMPDIR" ]; then
   TMPDIR="/tmp"
 fi
 
@@ -80,7 +80,7 @@ echo "Dashmate branch: ${dashmate_branch}"
 
 echo "Installing Dashmate"
 cd "$TMPDIR"
-git clone https://github.com/dashevo/mn-bootstrap.git --single-branch --branch $dashmate_branch
+git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/mn-bootstrap.git
 cd "$TMPDIR"/mn-bootstrap
 
 npm ci
