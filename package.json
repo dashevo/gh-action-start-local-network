@@ -1,13 +1,12 @@
 {
-  "name": "travis-ci-tools",
+  "name": "@dashevo/gh-action-start-local-network",
   "version": "0.18.4",
-  "description": "Collection of Travis helper scripts",
+  "description": "",
   "scripts": {
     "lint": "eslint .",
     "test": "NODE_ENV=test mocha ./test/**/*.spec.js"
   },
   "bin": {
-    "get-github-release-link": "bin/get-github-release-link",
     "get-release-version": "bin/get-release-version",
     "restore-cache": "bin/restore-cache",
     "save-cache": "bin/save-cache",
@@ -15,13 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dashevo/travis-ci-tools.git"
+    "url": "git+https://github.com/dashevo/gh-action-start-local-network.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dashevo/travis-ci-tools/issues"
+    "url": "https://github.com/dashevo/gh-action-start-local-network/issues"
   },
-  "homepage": "https://github.com/dashevo/travis-ci-tools#readme",
+  "homepage": "https://github.com/dashevo/gh-action-start-local-network#readme",
   "dependencies": {
     "@actions/cache": "^1.0.6",
     "semver": "^7.3.2"
