@@ -32,7 +32,8 @@ runs:
         echo "123456"
         echo "url1 $ACTIONS_CACHE_URL"
         echo "url2 $ACTIONS_RUNTIME_URL"
-        source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
+        echo ${{ env.ACTIONS_CACHE_URL }}
+        ACTIONS_CACHE_URL=${{ env.ACTIONS_CACHE_URL }} source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
           --override-major-version=0 \
           --dashmate-branch=${{ inputs.dashmate-branch }} \
           --dapi-branch=${{ inputs.dapi-branch }} \
