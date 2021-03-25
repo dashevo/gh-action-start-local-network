@@ -58,8 +58,6 @@ if [ -z "$TMPDIR" ]; then
   TMPDIR="/tmp"
 fi
 
-echo $TMPDIR
-
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
@@ -103,8 +101,8 @@ then
 
   #  Restore npm cache
 
-#  DRIVE_CACHE_HASH=$(sha1sum $TMPDIR/drive/package-lock.json | awk '{ print $1 }')
-#  "$DIR"/restore-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH" "alpine-node-drive-"
+  DRIVE_CACHE_HASH=$(sha1sum $TMPDIR/drive/package-lock.json | awk '{ print $1 }')
+  "$DIR"/restore-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH" "alpine-node-drive-"
 fi
 
 # Build DAPI from sources
@@ -117,8 +115,8 @@ then
 
   #  Restore npm cache
 
-#  DAPI_CACHE_HASH=$(sha1sum $TMPDIR/dapi/package-lock.json | awk '{ print $1 }')
-#  "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
+  DAPI_CACHE_HASH=$(sha1sum $TMPDIR/dapi/package-lock.json | awk '{ print $1 }')
+  "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
 fi
 
 # Setup local network
@@ -134,15 +132,15 @@ mn setup local --node-count="$NODE_COUNT" | tee setup.log
 
 #  Save npm cache
 
-#if [ -n "$drive_branch" ]
-#then
-#  "$DIR"/save-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH"
-#fi
+if [ -n "$drive_branch" ]
+then
+  "$DIR"/save-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH"
+fi
 
-#if [ -n "$dapi_branch" ]
-#then
-#  "$DIR"/save-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH"
-#fi
+if [ -n "$dapi_branch" ]
+then
+  "$DIR"/save-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH"
+fi
 
 CONFIG="local_1"
 
