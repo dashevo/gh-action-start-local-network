@@ -1,4 +1,4 @@
-  name: 'Start local Dash network'
+name: 'Start local Dash network'
 description: 'Invokes mn-bootstrap to set up a local network for CI'
 inputs:
   dashmate-branch:
