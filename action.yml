@@ -29,6 +29,9 @@ runs:
 
       working-directory: ${{ github.action_path }}
       run: |
+        echo "123456"
+        echo $ACTIONS_CACHE_URL
+        echo $ACTIONS_RUNTIME_URL
         source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
           --override-major-version=0 \
           --dashmate-branch=${{ inputs.dashmate-branch }} \
