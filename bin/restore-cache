@@ -9,8 +9,6 @@ async function main() {
 
   const restoreKeys = restoreKey === undefined ? undefined : [restoreKey];
 
-  console.log('restore cache ', [path], key, restoreKeys);
-
   return await cache.restoreCache([path], key, restoreKeys);
 }
 
@@ -18,12 +16,3 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
-
-
-// name: Enable NPM cache
-// uses: actions/cache@v2
-// with:
-// path: ‘~/.npm’
-// key: ${{ runner.os }}-node-${{ hashFiles(‘**/package-lock.json’) }}
-// restore-keys: |
-// ${{ runner.os }}-node-

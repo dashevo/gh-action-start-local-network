@@ -6,8 +6,6 @@ async function main() {
   const path = process.argv[2];
   const key = process.argv[3];
 
-  console.log('save cache ', [path], key);
-
   return await cache.saveCache([path], key);
 }
 
