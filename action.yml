@@ -13,25 +13,29 @@ inputs:
     description: ''
 
 runs:
-  using: composite
-  steps:
-    - name: Print with bash script
-      shell: bash
-      working-directory: ${{ github.action_path }}
-      run: ${{ github.action_path }}/test.sh
+  using: 'docker'
+  image: 'Dockerfile'
 
-    - name: Set up tools
-      shell: bash
-      working-directory: ${{ github.action_path }}
-      run: npm ci && npm link
-
-    - name: Start local network
-      shell: bash
-      working-directory: ${{ github.action_path }}
-      run: |
-        source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
-          --override-major-version=0 \
-          --dashmate-branch=${{ inputs.dashmate-branch }} \
-          --dapi-branch=${{ inputs.dapi-branch }} \
-          --drive-branch=${{ inputs.drive-branch }} \
-          --sdk-branch=${{ inputs.install-sdk-version }}
+#runs:
+#  using: composite
+#  steps:
+#    - name: Print with bash script
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#      run: ${{ github.action_path }}/test.sh
+#
+#    - name: Set up tools
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#      run: npm ci && npm link
+#
+#    - name: Start local network
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#      run: |
+#        source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
+#          --override-major-version=0 \
+#          --dashmate-branch=${{ inputs.dashmate-branch }} \
+#          --dapi-branch=${{ inputs.dapi-branch }} \
+#          --drive-branch=${{ inputs.drive-branch }} \
+#          --sdk-branch=${{ inputs.install-sdk-version }}
