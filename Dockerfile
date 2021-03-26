@@ -1,6 +1,10 @@
 # Container image that runs your code
 FROM node:12-alpine
 
+RUN apk update && \
+    apk --no-cache upgrade && \
+    apk add --no-cache bash
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./

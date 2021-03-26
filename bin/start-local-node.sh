@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash
 
 set -eax
 
@@ -57,8 +57,6 @@ done
 if [ -z "$TMPDIR" ]; then
   TMPDIR="/tmp"
 fi
-
-echo $BASH_SOURCE
 
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
