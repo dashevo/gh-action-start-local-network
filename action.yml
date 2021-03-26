@@ -23,7 +23,7 @@ runs:
     - name: Print with bash script
       shell: bash
       working-directory: ${{ github.action_path }}
-      run: test.sh
+      run: ${{ github.action_path }}/test.sh
 
     - name: Set up tools
       shell: bash
