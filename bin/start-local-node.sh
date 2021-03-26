@@ -53,9 +53,6 @@ case ${i} in
 esac
 done
 
-echo "url3 $ACTIONS_CACHE_URL"
-echo "url4 $ACTIONS_RUNTIME_URL"
-
 # Ensure $TMPDIR
 if [ -z "$TMPDIR" ]; then
   TMPDIR="/tmp"
