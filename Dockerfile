@@ -3,7 +3,8 @@ FROM node:12-alpine
 
 RUN apk update && \
     apk --no-cache upgrade && \
-    apk add --no-cache bash
+    apk add --no-cache bash \
+                        git
 
 WORKDIR /usr/src/app
 
