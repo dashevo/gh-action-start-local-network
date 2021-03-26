@@ -78,7 +78,7 @@ fi
 
 echo "Installing Dashmate from branch ${dashmate_branch}"
 
-git clone --depth 1 --branch npm_cache https://github.com/dashevo/mn-bootstrap.git "$TMPDIR/mn-bootstrap"
+git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/mn-bootstrap.git "$TMPDIR/mn-bootstrap"
 
 cd "$TMPDIR"/mn-bootstrap
 
