@@ -16,7 +16,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ GITHUB_WORKSPACE }}/package.json
+    - $GITHUB_WORKSPACE/package.json
     - --override-major-version=0
     - --dashmate-branch=${{ inputs.dashmate-branch }}
     - --dapi-branch=${{ inputs.dapi-branch }}
