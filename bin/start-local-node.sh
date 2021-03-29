@@ -82,6 +82,9 @@ git clone --depth 1 --branch npm-cache https://github.com/dashevo/mn-bootstrap.g
 
 cd "$TMPDIR"/mn-bootstrap
 
+# To solve "cannot run in wd" error
+npm config set unsafe-perm true
+
 npm ci
 npm link
 
