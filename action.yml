@@ -30,7 +30,7 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
-        ACTIONS_CACHE_URL: ${{ actions.cache_url }}
+        ACTIONS_CACHE_URL: ${{ inputs.actions-cache-url }}
       run: ${{ github.action_path }}/test.sh
 
     - name: Set up tools
@@ -42,7 +42,7 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
-        ACTIONS_CACHE_URL: ${{ actions.cache_url }}
+        ACTIONS_CACHE_URL: ${{ inputs.actions-cache-url }}
       run: |
         source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
           --override-major-version=0 \
