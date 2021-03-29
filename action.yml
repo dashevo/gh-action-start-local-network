@@ -11,6 +11,8 @@ inputs:
     description: 'Dash SDK (DashJS) branch to be injected into mn-bootstrap'
   actions-cache-url:
     description: ''
+  actions-cache-token:
+    description: ''
 
 #runs:
 #  using: 'docker'
@@ -43,6 +45,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         ACTIONS_CACHE_URL: ${{ inputs.actions-cache-url }}
+        ACTIONS_RUNTIME_TOKEN: ${{ inputs.actions-cache-token }}
       run: |
         source bin/start-local-node.sh $GITHUB_WORKSPACE/package.json \
           --override-major-version=0 \
