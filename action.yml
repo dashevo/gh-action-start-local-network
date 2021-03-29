@@ -9,7 +9,7 @@ inputs:
     description: 'drive branch to be injected into mn-bootstrap'
   install-sdk-version:
     description: 'Dash SDK (DashJS) branch to be injected into mn-bootstrap'
-  cache-url:
+  actions-cache-url:
     description: ''
 
 #runs:
