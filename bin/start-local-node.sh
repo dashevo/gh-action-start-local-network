@@ -135,7 +135,7 @@ echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
 
 echo "Starting mn-bootstrap"
 
-mn group:start "$mn_bootstrap_dapi_options" "$mn_bootstrap_drive_options" --wait-for-readiness
+mn group:start --wait-for-readiness
 
 # Export variables
 
