@@ -2,28 +2,15 @@
 
 set -eax
 
-cmd_usage="Init local node
+cmd_usage="Start local node
 
-Usage: init-local-node.sh <path-to-package.json> [options]
-  <path-to-package.json> must be an absolute path including file name
+Usage: start-local-node [options]
 
   Options:
-  --override-major-version    - major version to use
-  --override-minor-version    - minor version to use
   --dapi-branch               - dapi branch to be injected into mn-bootstrap
   --drive-branch              - drive branch to be injected into mn-bootstrap
   --sdk-branch                - Dash SDK (DashJS) branch to be injected into mn-bootstrap
 "
-
-PACKAGE_JSON_PATH="$1"
-
-if [ -z "$PACKAGE_JSON_PATH" ]
-then
-  echo "Path to package.json is not specified"
-  echo ""
-  echo "$cmd_usage"
-  exit 1
-fi
 
 for i in "$@"
 do
@@ -31,12 +18,6 @@ case ${i} in
     -h|--help)
         echo "$cmd_usage"
         exit 0
-    ;;
-    --override-major-version=*)
-    major_version="${i#*=}"
-    ;;
-    --override-minor-version=*)
-    minor_version="${i#*=}"
     ;;
     --dapi-branch=*)
     dapi_branch="${i#*=}"
@@ -60,21 +41,8 @@ fi
 
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-CURRENT_VERSION=$("$DIR"/get-release-version "$PACKAGE_JSON_PATH" "$major_version")
-
-echo "Current version: ${CURRENT_VERSION}";
 
 # Download and install mn-bootstrap
-
-if [ -z "$dashmate_branch" ]
-then
-  if [[ "$CURRENT_VERSION" == *"-dev"* ]]
-  then
-    dashmate_branch="v$CURRENT_VERSION"
-  else
-    dashmate_branch="master"
-  fi
-fi
 
 echo "Installing Dashmate from branch ${dashmate_branch}"
 

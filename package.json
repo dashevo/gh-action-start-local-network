@@ -22,8 +22,7 @@
   },
   "homepage": "https://github.com/dashevo/gh-action-start-local-network#readme",
   "dependencies": {
-    "@actions/cache": "^1.0.6",
-    "semver": "^7.3.2"
+    "@actions/cache": "^1.0.6"
   },
   "devDependencies": {
     "chai": "^4.2.0",
