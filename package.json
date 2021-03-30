@@ -7,7 +7,6 @@
     "test": "NODE_ENV=test mocha ./test/**/*.spec.js"
   },
   "bin": {
-    "get-release-version": "bin/get-release-version",
     "restore-cache": "bin/restore-cache",
     "save-cache": "bin/save-cache",
     "start-local-node": "bin/start-local-node.sh"
