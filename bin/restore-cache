@@ -9,7 +9,7 @@ async function main() {
 
   const restoreKeys = restoreKey === undefined ? undefined : [restoreKey];
 
-  return await cache.restoreCache([path], key, restoreKeys);
+  await cache.restoreCache([path], key, restoreKeys);
 }
 
 main().catch((e) => {

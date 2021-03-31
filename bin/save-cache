@@ -6,7 +6,13 @@ async function main() {
   const path = process.argv[2];
   const key = process.argv[3];
 
-  return await cache.saveCache([path], key);
+  try {
+    await cache.saveCache([path], key);
+  } catch (e) {
+    if (typeof e.message !== 'string' || !e.message.includes('Unable to reserve cache with key')) {
+      throw e;
+    }
+  }
 }
 
 main().catch((e) => {
