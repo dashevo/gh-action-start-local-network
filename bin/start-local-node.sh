@@ -70,7 +70,7 @@ then
   #  Restore npm cache
 
   DRIVE_CACHE_HASH=$(sha1sum $TMPDIR/drive/package-lock.json | awk '{ print $1 }')
-#  "$DIR"/restore-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH" "alpine-node-drive-"
+  "$DIR"/restore-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH" "alpine-node-drive-"
 fi
 
 # Build DAPI from sources
@@ -84,7 +84,7 @@ then
   #  Restore npm cache
 
   DAPI_CACHE_HASH=$(sha1sum $TMPDIR/dapi/package-lock.json | awk '{ print $1 }')
-#  "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
+  "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
 fi
 
 # Setup local network
