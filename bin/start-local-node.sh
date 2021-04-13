@@ -96,7 +96,7 @@ NODE_COUNT=3
 mn config:set --config=local environment development
 mn config:set --config=local platform.drive.abci.log.stdout.level trace
 
-mn setup local --node-count="$NODE_COUNT" | tee setup.log
+mn setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
 
 #  Save npm cache
 
@@ -135,7 +135,7 @@ echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY
 
 echo "Starting mn-bootstrap"
 
-mn group:start --wait-for-readiness
+mn group:start --verbose --wait-for-readiness
 
 # Export variables
 
