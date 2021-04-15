@@ -79,7 +79,7 @@ if [ -n "$dapi_branch" ]
 then
   echo "Cloning DAPI from branch $dapi_branch"
   git clone --depth 1 --branch $dapi_branch https://github.com/dashevo/dapi.git "$TMPDIR/dapi"
-  mn config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/drive"
+  mn config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/dapi"
 
   #  Restore npm cache
 
