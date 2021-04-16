@@ -87,6 +87,10 @@ then
   "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
 fi
 
+# Update node software
+
+mn update
+
 # Setup local network
 
 echo "Setting up a local network"
