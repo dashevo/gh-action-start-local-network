@@ -6,9 +6,7 @@ inputs:
   dapi-branch:
     description: 'dapi branch to be injected into mn-bootstrap'
   drive-branch:
-    description: 'drive branch to be injected into mn-bootstrap'
-  install-sdk-version:
-    description: 'Dash SDK (DashJS) branch to be injected into mn-bootstrap'
+  sdk-branch:
   actions-cache-url:
     description: ''
   actions-cache-token:
@@ -34,4 +32,4 @@ runs:
           --dashmate-branch=${{ inputs.dashmate-branch }} \
           --dapi-branch=${{ inputs.dapi-branch }} \
           --drive-branch=${{ inputs.drive-branch }} \
-          --sdk-branch=${{ inputs.install-sdk-version }}
+          --sdk-branch=${{ inputs.sdk-branch }}
