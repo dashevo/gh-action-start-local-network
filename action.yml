@@ -1,12 +1,14 @@
 name: 'Start local Dash network'
-description: 'Invokes mn-bootstrap to set up a local network for CI'
+description: 'Invokes dashmate to set up a local network for CI'
 inputs:
   dashmate-branch:
     description: 'dashmate branch to use'
   dapi-branch:
-    description: 'dapi branch to be injected into mn-bootstrap'
+    description: 'dapi branch to be injected into dashmate'
   drive-branch:
+    description: 'drive branch to be injected into dashmate'
   sdk-branch:
+    description: 'Dash SDK (DashJS) branch to be injected into dashmate'
   actions-cache-url:
     description: ''
   actions-cache-token:
