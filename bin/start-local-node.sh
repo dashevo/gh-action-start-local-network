@@ -7,9 +7,9 @@ cmd_usage="Start local node
 Usage: start-local-node [options]
 
   Options:
-  --dapi-branch               - dapi branch to be injected into mn-bootstrap
-  --drive-branch              - drive branch to be injected into mn-bootstrap
-  --sdk-branch                - Dash SDK (DashJS) branch to be injected into mn-bootstrap
+  --dapi-branch               - dapi branch to be injected into dashmate
+  --drive-branch              - drive branch to be injected into dashmate
+  --sdk-branch                - Dash SDK (DashJS) branch to be injected into dashmate
 "
 
 for i in "$@"
@@ -42,13 +42,13 @@ fi
 # Define variables
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Download and install mn-bootstrap
+# Download and install dashmate
 
 echo "Installing Dashmate from branch ${dashmate_branch}"
 
-git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/mn-bootstrap.git "$TMPDIR/mn-bootstrap"
+git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/dashmate.git "$TMPDIR/dashmate"
 
-cd "$TMPDIR"/mn-bootstrap
+cd "$TMPDIR"/dashmate
 
 npm ci
 npm link
@@ -65,7 +65,7 @@ if [ -n "$drive_branch" ]
 then
   echo "Cloning Drive from branch $drive_branch"
   git clone --depth 1 --branch $drive_branch https://github.com/dashevo/js-drive.git "$TMPDIR/drive"
-  mn config:set --config=local platform.drive.abci.docker.build.path "$TMPDIR/drive"
+  dashmate config:set --config=local platform.drive.abci.docker.build.path "$TMPDIR/drive"
 
   #  Restore npm cache
 
@@ -79,7 +79,7 @@ if [ -n "$dapi_branch" ]
 then
   echo "Cloning DAPI from branch $dapi_branch"
   git clone --depth 1 --branch $dapi_branch https://github.com/dashevo/dapi.git "$TMPDIR/dapi"
-  mn config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/dapi"
+  dashmate config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/dapi"
 
   #  Restore npm cache
 
@@ -89,7 +89,7 @@ fi
 
 # Update node software
 
-mn update
+dashmate update
 
 # Setup local network
 
@@ -97,10 +97,10 @@ echo "Setting up a local network"
 
 NODE_COUNT=3
 
-mn config:set --config=local environment development
-mn config:set --config=local platform.drive.abci.log.stdout.level trace
+dashmate config:set --config=local environment development
+dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
 
-mn setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
+dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
 
 #  Save npm cache
 
@@ -118,13 +118,13 @@ CONFIG="local_1"
 
 MINER_CONFIG="local_seed"
 
-mn config:set --config="$MINER_CONFIG" core.miner.enable true
-mn config:set --config="$MINER_CONFIG" core.miner.interval 60s
+dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
+dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
 
 FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" setup.log | awk '{printf $4}')
-DPNS_CONTRACT_ID=$(mn config:get --config="$CONFIG" platform.dpns.contract.id)
-DPNS_CONTRACT_BLOCK_HEIGHT=$(mn config:get --config="$CONFIG" platform.dpns.contract.blockHeight)
-DPNS_TOP_LEVEL_IDENTITY_ID=$(mn config:get --config="$CONFIG" platform.dpns.ownerId)
+DPNS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.id)
+DPNS_CONTRACT_BLOCK_HEIGHT=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.blockHeight)
+DPNS_TOP_LEVEL_IDENTITY_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.ownerId)
 DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY=$(grep -m 1 "HD private key:" setup.log | awk '{$1=""; printf $5}')
 
 echo "Local network is configured:"
@@ -135,11 +135,11 @@ echo "DPNS_CONTRACT_BLOCK_HEIGHT: ${DPNS_CONTRACT_BLOCK_HEIGHT}"
 echo "DPNS_TOP_LEVEL_IDENTITY_ID: ${DPNS_TOP_LEVEL_IDENTITY_ID}"
 echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY}"
 
-# Start mn-bootstrap
+# Start dashmate
 
-echo "Starting mn-bootstrap"
+echo "Starting dashmate"
 
-mn group:start --verbose --wait-for-readiness
+dashmate group:start --verbose --wait-for-readiness
 
 # Export variables
 
