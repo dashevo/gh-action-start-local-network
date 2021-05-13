@@ -13,6 +13,10 @@ inputs:
     description: ''
   actions-cache-token:
     description: ''
+outputs:
+  test-output:
+    description: 'Should pass output here'
+
 
 runs:
   using: composite
