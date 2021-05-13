@@ -41,6 +41,7 @@ runs:
           --sdk-branch=${{ inputs.sdk-branch }}
 
     - name: Test if output is set in composite
+      shell: bash
       run: |
         echo 'In composite output test step'
         echo $test-output
