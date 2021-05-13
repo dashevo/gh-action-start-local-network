@@ -149,3 +149,4 @@ echo "dpns-top-level-identity-private-key=$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY" 
 echo "dpns-top-level-identity-id=$DPNS_TOP_LEVEL_IDENTITY_ID" >> $GITHUB_ENV
 echo "dpns-contract-id=$DPNS_CONTRACT_ID" >> $GITHUB_ENV
 echo "dpns-contract-block-height=$DPNS_CONTRACT_BLOCK_HEIGHT" >> $GITHUB_ENV
+echo "::set-output name=test-output::strawberry"
