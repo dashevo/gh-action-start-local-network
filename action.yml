@@ -14,10 +14,24 @@ inputs:
   actions-cache-token:
     description: ''
 outputs:
-  test-output:
-    description: 'Should pass output here'
-    value: ${{ steps.start-local-network.outputs.fruit }}
-
+  current-version:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.current-version }}
+  faucet-private-key:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.faucet-private-key }}
+  dpns-top-level-identity-private-key:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-top-level-identity-private-key }}
+  dpns-top-level-identity-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-top-level-identity-id }}
+  dpns-contract-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-contract-id }}
+  dpns-contract-block-height:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-contract-block-height }}
 
 runs:
   using: composite
@@ -41,15 +55,3 @@ runs:
           --dapi-branch=${{ inputs.dapi-branch }} \
           --drive-branch=${{ inputs.drive-branch }} \
           --sdk-branch=${{ inputs.sdk-branch }}
-
-    - name: Test if output is set in shell var
-      shell: bash
-      run: |
-        echo 'In composite output test step'
-        echo $fruit
-
-    - name: Test if output is set in expression
-      shell: bash
-      run: |
-        echo 'In composite output expression test step'
-        echo ${{ steps.start-local-network.outputs.fruit }}
