@@ -39,3 +39,8 @@ runs:
           --dapi-branch=${{ inputs.dapi-branch }} \
           --drive-branch=${{ inputs.drive-branch }} \
           --sdk-branch=${{ inputs.sdk-branch }}
+
+    - name: Test if output is set in composite
+      run: |
+        echo 'In composite output test step'
+        echo $test-output
