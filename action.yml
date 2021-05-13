@@ -16,6 +16,7 @@ inputs:
 outputs:
   test-output:
     description: 'Should pass output here'
+    value: ${{ steps.start-local-network.outputs.fruit }}
 
 
 runs:
@@ -27,6 +28,7 @@ runs:
       run: npm ci && npm link
 
     - name: Start local network
+      id: start-local-network
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
@@ -40,8 +42,14 @@ runs:
           --drive-branch=${{ inputs.drive-branch }} \
           --sdk-branch=${{ inputs.sdk-branch }}
 
-    - name: Test if output is set in composite
+    - name: Test if output is set in shell var
       shell: bash
       run: |
         echo 'In composite output test step'
-        echo $test-output
+        echo $fruit
+
+    - name: Test if output is set in expression
+      shell: bash
+      run: |
+        echo 'In composite output expression test step'
+        echo ${{ steps.start-local-network.outputs.fruit }}
