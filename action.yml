@@ -13,6 +13,25 @@ inputs:
     description: ''
   actions-cache-token:
     description: ''
+outputs:
+  current-version:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.current-version }}
+  faucet-private-key:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.faucet-private-key }}
+  dpns-top-level-identity-private-key:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-top-level-identity-private-key }}
+  dpns-top-level-identity-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-top-level-identity-id }}
+  dpns-contract-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-contract-id }}
+  dpns-contract-block-height:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.dpns-contract-block-height }}
 
 runs:
   using: composite
@@ -23,6 +42,7 @@ runs:
       run: npm ci && npm link
 
     - name: Start local network
+      id: start-local-network
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
