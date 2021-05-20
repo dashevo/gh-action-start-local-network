@@ -96,6 +96,14 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
+MINER_INTERVAL=2.5m
+DASHMATE_VERSION=$(jq -r '.version' $DIR/package.json)
+DASHMATE_SHORT_VERSION=${DASHMATE_VERSION%.*}
+
+if [ DASHMATE_SHORT_VERSION == "0.20" ]
+then
+  dashmate config:set --config=local core.miner.interval $MINER_INTERVAL
+fi
 
 dashmate config:set --config=local environment development
 dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
