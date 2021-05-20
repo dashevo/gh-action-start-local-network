@@ -96,13 +96,13 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
-MINER_INTERVAL=2.5m
+CORE_MINER_INTERVAL=2.5m
 DASHMATE_VERSION=$(jq -r '.version' $DIR/package.json)
 DASHMATE_SHORT_VERSION=${DASHMATE_VERSION%.*}
 
 if [ DASHMATE_SHORT_VERSION == "0.20" ]
 then
-  dashmate config:set --config=local core.miner.interval $MINER_INTERVAL
+  dashmate config:set --config=local core.miner.interval $CORE_MINER_INTERVAL
 fi
 
 dashmate config:set --config=local environment development
