@@ -97,7 +97,7 @@ echo "Setting up a local network"
 
 NODE_COUNT=3
 CORE_MINER_INTERVAL=2.5m
-DASHMATE_VERSION=$(jq -r '.version' $DIR/package.json)
+DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 DASHMATE_SHORT_VERSION=${DASHMATE_VERSION%.*}
 
 if [ DASHMATE_SHORT_VERSION == "0.20" ]
