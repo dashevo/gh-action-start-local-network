@@ -100,6 +100,8 @@ CORE_MINER_INTERVAL=2.5m
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 DASHMATE_SHORT_VERSION=${DASHMATE_VERSION%.*}
 
+echo $DASHMATE_SHORT_VERSION
+
 if [ DASHMATE_SHORT_VERSION == "0.20" ]
 then
   dashmate config:set --config=local core.miner.interval $CORE_MINER_INTERVAL
