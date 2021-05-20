@@ -99,9 +99,8 @@ NODE_COUNT=3
 CORE_MINER_INTERVAL=2.5m
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 
-if [[ DASHMATE_VERSION =~ ^0\.20.* ]]; then
-  echo "in condition"
-  #dashmate config:set --config=local core.miner.interval $CORE_MINER_INTERVAL
+if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
+  dashmate config:set --config=local core.miner.interval $CORE_MINER_INTERVAL
 fi
 
 dashmate config:set --config=local environment development
