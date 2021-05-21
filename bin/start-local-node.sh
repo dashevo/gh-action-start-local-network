@@ -106,9 +106,8 @@ if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
 else
   dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
 fi
-#  Save npm cache
 
-mn config --config=local_1
+#  Save npm cache
 
 if [ -n "$drive_branch" ]
 then
