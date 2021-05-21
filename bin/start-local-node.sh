@@ -96,17 +96,17 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
-CORE_MINER_INTERVAL=2.5m
+MINER_INTERVAL=2.5m
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
-
-if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
-  dashmate config:set --config=local core.miner.interval $CORE_MINER_INTERVAL
-fi
 
 dashmate config:set --config=local environment development
 dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
 
-dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
+if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
+  dashmate setup local --verbose --node-count="$NODE_COUNT" --miner-interval="$MINER_INTERVAL" | tee setup.log
+else
+  dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
+fi
 
 #  Save npm cache
 
