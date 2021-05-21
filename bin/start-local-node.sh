@@ -96,14 +96,13 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
-DEBUG_OUTPUT=true
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 
 dashmate config:set --config=local environment development
 dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
 
 if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
-  dashmate setup local --verbose --node-count="$NODE_COUNT" --debug-output="$DEBUG_OUTPUT" | tee setup.log
+  dashmate setup local --verbose --node-count="$NODE_COUNT" --debug | tee setup.log
 else
   dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
 fi
