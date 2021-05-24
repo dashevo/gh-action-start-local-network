@@ -124,8 +124,10 @@ CONFIG="local_1"
 
 MINER_CONFIG="local_seed"
 
-dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
-dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
+if [[ $DASHMATE_VERSION =~ ^0\.19* ]]; then
+  dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
+  dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
+fi
 
 FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" setup.log | awk '{printf $4}')
 DPNS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.id)
