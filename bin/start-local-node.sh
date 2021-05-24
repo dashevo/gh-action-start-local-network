@@ -96,7 +96,7 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
-MINER_INTERVAL=2.5m
+MINER_INTERVAL=60s
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 
 dashmate config:set --config=local environment development
