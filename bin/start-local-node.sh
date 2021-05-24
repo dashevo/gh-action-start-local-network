@@ -96,11 +96,17 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
+MINER_INTERVAL=60s
+DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 
 dashmate config:set --config=local environment development
 dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
 
-dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
+if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
+  dashmate setup local --verbose --node-count="$NODE_COUNT" --miner-interval="$MINER_INTERVAL" | tee setup.log
+else
+  dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
+fi
 
 #  Save npm cache
 
@@ -118,8 +124,10 @@ CONFIG="local_1"
 
 MINER_CONFIG="local_seed"
 
-dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
-dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
+if [[ $DASHMATE_VERSION =~ ^0\.19* ]]; then
+  dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
+  dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
+fi
 
 FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" setup.log | awk '{printf $4}')
 DPNS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.id)
