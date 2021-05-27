@@ -97,7 +97,7 @@ echo "Setting up a local network"
 
 NODE_COUNT=3
 MINER_INTERVAL=60s
-DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
+DASHMATE_VERSION=$(jq -r '.version' ${TMPDIR}/dashmate/package.json)
 
 echo "Using dashmate ${DASHMATE_VERSION}"
 
