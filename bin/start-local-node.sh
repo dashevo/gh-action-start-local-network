@@ -99,6 +99,8 @@ NODE_COUNT=3
 MINER_INTERVAL=60s
 DASHMATE_VERSION=$(jq -r '.version' $GITHUB_WORKSPACE/package.json)
 
+echo "Using dashmate ${DASHMATE_VERSION}"
+
 dashmate config:set --config=local environment development
 dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
 
@@ -125,8 +127,9 @@ CONFIG="local_1"
 MINER_CONFIG="local_seed"
 
 if [[ $DASHMATE_VERSION =~ ^0\.19* ]]; then
-  dashmate config:set --config="$MINER_CONFIG" core.miner.enable true
-  dashmate config:set --config="$MINER_CONFIG" core.miner.interval 60s
+  echo "Enable miner"
+  dashmate config:set --config="${MINER_CONFIG}" core.miner.enable true
+  dashmate config:set --config="${MINER_CONFIG}" core.miner.interval 60s
 fi
 
 FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" setup.log | awk '{printf $4}')
