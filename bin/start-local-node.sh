@@ -96,7 +96,7 @@ dashmate update
 echo "Setting up a local network"
 
 NODE_COUNT=3
-MINER_INTERVAL=60s
+MINER_INTERVAL=20s
 DASHMATE_VERSION=$(jq -r '.version' ${TMPDIR}/dashmate/package.json)
 
 echo "Using dashmate ${DASHMATE_VERSION}"
