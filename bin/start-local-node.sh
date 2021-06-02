@@ -101,12 +101,10 @@ DASHMATE_VERSION=$(jq -r '.version' ${TMPDIR}/dashmate/package.json)
 
 echo "Using dashmate ${DASHMATE_VERSION}"
 
-dashmate config:set --config=local environment development
-dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
-
 if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
   dashmate setup local --verbose --node-count="$NODE_COUNT" --miner-interval="$MINER_INTERVAL" --debug-logs | tee setup.log
 else
+  dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
   dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
 fi
 
@@ -132,7 +130,6 @@ if [[ $DASHMATE_VERSION =~ ^0\.19* ]]; then
   dashmate config:set --config="${MINER_CONFIG}" core.miner.interval 60s
 fi
 
-FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" setup.log | awk '{printf $4}')
 DPNS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.id)
 DPNS_CONTRACT_BLOCK_HEIGHT=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.blockHeight)
 DPNS_TOP_LEVEL_IDENTITY_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.ownerId)
@@ -140,11 +137,21 @@ DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY=$(grep -m 1 "HD private key:" setup.log | aw
 
 echo "Local network is configured:"
 
-echo "FAUCET_PRIVATE_KEY: ${FAUCET_PRIVATE_KEY}"
 echo "DPNS_CONTRACT_ID: ${DPNS_CONTRACT_ID}"
 echo "DPNS_CONTRACT_BLOCK_HEIGHT: ${DPNS_CONTRACT_BLOCK_HEIGHT}"
 echo "DPNS_TOP_LEVEL_IDENTITY_ID: ${DPNS_TOP_LEVEL_IDENTITY_ID}"
 echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY}"
+
+echo "Mint 100 Dash to faucet address"
+
+dashmate wallet:mint --verbose --config=local_seed 100 | tee mint.log
+
+FAUCET_ADDRESS=$(grep -m 1 "Address:" mint.log | awk '{printf $3}')
+FAUCET_PRIVATE_KEY=$(grep -m 1 "Private key:" mint.log | awk '{printf $4}')
+
+echo "FAUCET_ADDRESS: ${FAUCET_ADDRESS}"
+echo "FAUCET_PRIVATE_KEY: ${FAUCET_PRIVATE_KEY}"
+
 
 # Start dashmate
 
@@ -155,6 +162,7 @@ dashmate group:start --verbose --wait-for-readiness
 # Export variables
 
 echo "::set-output name=current-version::$CURRENT_VERSION"
+echo "::set-output name=faucet-address::$FAUCET_ADDRESS"
 echo "::set-output name=faucet-private-key::$FAUCET_PRIVATE_KEY"
 echo "::set-output name=dpns-top-level-identity-private-key::$DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY"
 echo "::set-output name=dpns-top-level-identity-id::$DPNS_TOP_LEVEL_IDENTITY_ID"

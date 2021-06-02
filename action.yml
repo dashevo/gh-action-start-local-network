@@ -17,6 +17,9 @@ outputs:
   current-version:
     description: ''
     value: ${{ steps.start-local-network.outputs.current-version }}
+  faucet-address:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.faucet-address }}
   faucet-private-key:
     description: ''
     value: ${{ steps.start-local-network.outputs.faucet-private-key }}
