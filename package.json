@@ -1,6 +1,6 @@
 {
   "name": "@dashevo/gh-action-start-local-network",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "scripts": {
     "lint": "eslint .",
