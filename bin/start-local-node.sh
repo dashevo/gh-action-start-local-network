@@ -39,9 +39,6 @@ if [ -z "$TMPDIR" ]; then
   TMPDIR="/tmp"
 fi
 
-# Define variables
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 # Download and install dashmate
 
 echo "Installing Dashmate from branch ${dashmate_branch}"
@@ -66,11 +63,6 @@ then
   echo "Cloning Drive from branch $drive_branch"
   git clone --depth 1 --branch $drive_branch https://github.com/dashevo/js-drive.git "$TMPDIR/drive"
   dashmate config:set --config=local platform.drive.abci.docker.build.path "$TMPDIR/drive"
-
-  #  Restore npm cache
-
-  DRIVE_CACHE_HASH=$(sha1sum $TMPDIR/drive/package-lock.json | awk '{ print $1 }')
-  "$DIR"/restore-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH" "alpine-node-drive-"
 fi
 
 # Build DAPI from sources
@@ -80,11 +72,6 @@ then
   echo "Cloning DAPI from branch $dapi_branch"
   git clone --depth 1 --branch $dapi_branch https://github.com/dashevo/dapi.git "$TMPDIR/dapi"
   dashmate config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/dapi"
-
-  #  Restore npm cache
-
-  DAPI_CACHE_HASH=$(sha1sum $TMPDIR/dapi/package-lock.json | awk '{ print $1 }')
-  "$DIR"/restore-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH" "alpine-node-dapi-"
 fi
 
 # Update node software
@@ -106,18 +93,6 @@ if [[ $DASHMATE_VERSION =~ ^0\.20* ]]; then
 else
   dashmate config:set --config=local platform.drive.abci.log.stdout.level trace
   dashmate setup local --verbose --node-count="$NODE_COUNT" | tee setup.log
-fi
-
-#  Save npm cache
-
-if [ -n "$drive_branch" ]
-then
-  "$DIR"/save-cache "$TMPDIR/drive/docker/cache" "alpine-node-drive-$DRIVE_CACHE_HASH"
-fi
-
-if [ -n "$dapi_branch" ]
-then
-  "$DIR"/save-cache "$TMPDIR/dapi/docker/cache" "alpine-node-dapi-$DAPI_CACHE_HASH"
 fi
 
 CONFIG="local_1"

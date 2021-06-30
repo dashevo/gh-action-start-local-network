@@ -9,10 +9,6 @@ inputs:
     description: 'drive branch to be injected into dashmate'
   sdk-branch:
     description: 'Dash SDK (DashJS) branch to be injected into dashmate'
-  actions-cache-url:
-    description: ''
-  actions-cache-token:
-    description: ''
 outputs:
   current-version:
     description: ''
@@ -48,9 +44,6 @@ runs:
       id: start-local-network
       shell: bash
       working-directory: ${{ github.action_path }}
-      env:
-        ACTIONS_CACHE_URL: ${{ inputs.actions-cache-url }}
-        ACTIONS_RUNTIME_TOKEN: ${{ inputs.actions-cache-token }}
       run: |
         source bin/start-local-node.sh \
           --override-major-version=0 \
