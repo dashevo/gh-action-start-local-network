@@ -47,6 +47,8 @@ git clone --depth 1 --branch $dashmate_branch https://github.com/dashevo/dashmat
 
 cd "$TMPDIR"/dashmate
 
+echo "DOCKER_COMPOSE_V2=1" >> .env
+
 npm ci
 npm link
 
