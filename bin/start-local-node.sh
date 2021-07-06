@@ -63,7 +63,7 @@ fi
 if [ -n "$drive_branch" ]
 then
   echo "Cloning Drive from branch $drive_branch"
-  git clone --depth 1 --branch $drive_branch https://github.com/dashevo/js-drive.git "$TMPDIR/drive"
+  git clone --depth 1 --branch $drive_branch https://github.com/strophy/js-drive.git "$TMPDIR/drive"
   dashmate config:set --config=local platform.drive.abci.docker.build.path "$TMPDIR/drive"
 fi
 
