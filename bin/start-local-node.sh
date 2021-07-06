@@ -76,6 +76,10 @@ then
   dashmate config:set --config=local platform.dapi.api.docker.build.path "$TMPDIR/dapi"
 fi
 
+# Update node software
+
+dashmate update -v
+
 # Setup local network
 
 echo "Setting up a local network"
