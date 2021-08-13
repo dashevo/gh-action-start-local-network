@@ -111,6 +111,8 @@ DPNS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.contract
 DPNS_CONTRACT_BLOCK_HEIGHT=$(dashmate config:get --config="$CONFIG" platform.dpns.contract.blockHeight)
 DPNS_TOP_LEVEL_IDENTITY_ID=$(dashmate config:get --config="$CONFIG" platform.dpns.ownerId)
 DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY=$(grep -m 1 "HD private key:" setup.log | awk '{$1=""; printf $5}')
+FEATURE_FLAGS_IDENTITY_ID=$(dashmate config:get --config="$CONFIG" platform.featureFlags.ownerId)
+FEATURE_FLAGS_CONTRACT_ID=$(dashmate config:get --config="$CONFIG" platform.featureFlags.contract.id)
 
 echo "Local network is configured:"
 
@@ -118,6 +120,8 @@ echo "DPNS_CONTRACT_ID: ${DPNS_CONTRACT_ID}"
 echo "DPNS_CONTRACT_BLOCK_HEIGHT: ${DPNS_CONTRACT_BLOCK_HEIGHT}"
 echo "DPNS_TOP_LEVEL_IDENTITY_ID: ${DPNS_TOP_LEVEL_IDENTITY_ID}"
 echo "DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY: ${DPNS_TOP_LEVEL_IDENTITY_PRIVATE_KEY}"
+echo "FEATURE_FLAGS_IDENTITY_ID: ${FEATURE_FLAGS_IDENTITY_ID}"
+echo "FEATURE_FLAGS_CONTRACT_ID: ${FEATURE_FLAGS_CONTRACT_ID}"
 
 echo "Mint 100 Dash to faucet address"
 
@@ -145,3 +149,5 @@ echo "::set-output name=dpns-top-level-identity-private-key::$DPNS_TOP_LEVEL_IDE
 echo "::set-output name=dpns-top-level-identity-id::$DPNS_TOP_LEVEL_IDENTITY_ID"
 echo "::set-output name=dpns-contract-id::$DPNS_CONTRACT_ID"
 echo "::set-output name=dpns-contract-block-height::$DPNS_CONTRACT_BLOCK_HEIGHT"
+echo "::set-output name=feature-flags-identity-id::$FEATURE_FLAGS_IDENTITY_ID"
+echo "::set-output name=feature-flags-contract-id::$FEATURE_FLAGS_CONTRACT_ID"

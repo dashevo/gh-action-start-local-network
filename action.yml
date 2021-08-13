@@ -31,6 +31,12 @@ outputs:
   dpns-contract-block-height:
     description: ''
     value: ${{ steps.start-local-network.outputs.dpns-contract-block-height }}
+  feature-flags-identity-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.feature-flags-identity-id }}
+  feature-flags-contract-id:
+    description: ''
+    value: ${{ steps.start-local-network.outputs.feature-flags-contract-id }}
 
 runs:
   using: composite
