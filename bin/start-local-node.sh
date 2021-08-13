@@ -56,6 +56,7 @@ if [ -n "$sdk_branch" ]
 then
   echo "Installing Dash SDK from branch $sdk_branch"
   npm i "github:dashevo/DashJS#$sdk_branch"
+  npm dedupe
 fi
 
 # Build Drive from sources
